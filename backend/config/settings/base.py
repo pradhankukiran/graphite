@@ -170,6 +170,18 @@ MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 # ---------------------------------------------------------------------------
+# Optional Vercel Blob storage
+# ---------------------------------------------------------------------------
+VERCEL_BLOB_ENABLED = os.environ.get("VERCEL_BLOB_ENABLED", "False").lower() in (
+    "true",
+    "1",
+    "yes",
+)
+BLOB_READ_WRITE_TOKEN = os.environ.get("BLOB_READ_WRITE_TOKEN", "")
+VERCEL_BLOB_ACCESS = os.environ.get("VERCEL_BLOB_ACCESS", "public")
+VERCEL_BLOB_PATH_PREFIX = os.environ.get("VERCEL_BLOB_PATH_PREFIX", "documents")
+
+# ---------------------------------------------------------------------------
 # Default primary key field type
 # ---------------------------------------------------------------------------
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

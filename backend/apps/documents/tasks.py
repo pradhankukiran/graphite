@@ -102,6 +102,7 @@ def parse_document_task(document_id: str) -> str:
     Updates Document.status to PARSING, then saves extracted text.
     """
     from apps.documents.models import Document
+    from apps.documents.blob_storage import open_document_path
     from apps.documents.parsers import parse_document
 
     logger.info("Parsing document %s", document_id)
@@ -125,8 +126,8 @@ def parse_document_task(document_id: str) -> str:
     })
 
     try:
-        file_path = document.file.path
-        raw_text = parse_document(file_path, document.file_type)
+        with open_document_path(document) as file_path:
+            raw_text = parse_document(file_path, document.file_type)
 
         document.raw_text = raw_text
         document.save(update_fields=["raw_text", "updated_at"])

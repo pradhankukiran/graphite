@@ -29,6 +29,9 @@ class Document(UUIDModel, TimestampedModel):
     filename = models.CharField(max_length=500)
     file_type = models.CharField(max_length=10, choices=FileType.choices)
     file = models.FileField(upload_to="documents/%Y/%m/")
+    blob_url = models.URLField(max_length=2048, blank=True, default="")
+    blob_download_url = models.URLField(max_length=2048, blank=True, default="")
+    blob_pathname = models.CharField(max_length=1024, blank=True, default="")
     file_size = models.BigIntegerField(default=0)
     status = models.CharField(
         max_length=20, choices=Status.choices, default=Status.PENDING

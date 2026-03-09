@@ -104,7 +104,27 @@ export class WebSocketManager {
 
 export function createWebSocketUrl(path: string): string {
   if (typeof window === 'undefined') return '';
-  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-  const host = process.env.NEXT_PUBLIC_WS_URL || window.location.host;
-  return `${protocol}//${host}${path}`;
+
+  const configured = process.env.NEXT_PUBLIC_WS_URL?.trim();
+  if (!configured) {
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    return `${protocol}//${window.location.host}${path}`;
+  }
+
+  try {
+    const normalized = configured.match(/^wss?:\/\//)
+      ? configured
+      : configured.match(/^https?:\/\//)
+        ? configured.replace(/^http/, 'ws')
+        : `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${configured}`;
+    const url = new URL(normalized);
+    const basePath = url.pathname.replace(/\/$/, '');
+    const fullPath = basePath && !path.startsWith(`${basePath}/`) && path !== basePath
+      ? `${basePath}${path}`
+      : path;
+    return `${url.protocol}//${url.host}${fullPath}`;
+  } catch {
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    return `${protocol}//${configured}${path}`;
+  }
 }

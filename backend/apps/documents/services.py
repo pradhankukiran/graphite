@@ -6,6 +6,11 @@ import os
 from django.db import models, transaction
 from django.db.models import Sum
 
+from apps.documents.blob_storage import (
+    delete_document_blob,
+    is_blob_enabled,
+    upload_document_blob,
+)
 from apps.documents.models import Chunk, Document, IngestionJob
 from apps.knowledge_graph.neo4j_client import Neo4jClient
 
@@ -61,6 +66,24 @@ def create_document(user, file) -> Document:
             status=IngestionJob.Status.PENDING,
         )
 
+    if is_blob_enabled():
+        try:
+            blob_fields = upload_document_blob(document)
+        except Exception as exc:
+            logger.exception(
+                "Failed to upload document %s to Vercel Blob", document.id
+            )
+            if document.file:
+                document.file.delete(save=False)
+            document.delete()
+            raise RuntimeError(
+                f"Failed to upload '{filename}' to Vercel Blob"
+            ) from exc
+
+        for field_name, value in blob_fields.items():
+            setattr(document, field_name, value)
+        document.save(update_fields=[*blob_fields.keys(), "updated_at"])
+
     return document
 
 
@@ -91,6 +114,14 @@ def delete_document(document_id: str) -> None:
         except Exception:
             logger.warning(
                 "Failed to delete file for document %s", document_id, exc_info=True
+            )
+
+    if document.blob_pathname or document.blob_url:
+        try:
+            delete_document_blob(document)
+        except Exception:
+            logger.warning(
+                "Failed to delete blob for document %s", document_id, exc_info=True
             )
 
     # Cascade delete removes chunks and ingestion job

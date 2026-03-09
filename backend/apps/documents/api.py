@@ -50,13 +50,16 @@ def list_documents(
     return qs
 
 
-@router.post("/upload", response={201: DocumentUploadOut})
+@router.post("/upload", response={201: DocumentUploadOut, 400: dict, 500: dict})
 def upload_document(request: HttpRequest, file: UploadedFile = File(...)):
     """Upload a document and trigger the ingestion pipeline."""
     try:
         document = create_document(user=request.auth, file=file)
     except ValueError as exc:
         return 400, {"detail": str(exc)}
+    except RuntimeError as exc:
+        logger.exception("Failed to store document upload")
+        return 500, {"detail": str(exc)}
 
     # Trigger the async ingestion pipeline
     try:

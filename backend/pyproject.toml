@@ -22,7 +22,7 @@ dependencies = [
     "sentence-transformers",
     "openai>=1.0",
     "python-dotenv",
-    "unstructured[all-docs]",
+    "unstructured[pdf,docx,md]",
     "gunicorn",
     "uvicorn[standard]",
     "httpx",

@@ -7,8 +7,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-COPY pyproject.toml .
-RUN pip install --no-cache-dir --prefix=/install .
+COPY pyproject.toml constraints.txt ./
+RUN pip install --no-cache-dir --prefix=/install -c constraints.txt .
 
 # ---- Runner stage ----
 FROM python:3.12-slim AS runner
@@ -18,8 +18,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libmagic1 \
     poppler-utils \
     tesseract-ocr \
-    libreoffice-core \
-    pandoc \
     libpq5 \
     curl \
     && rm -rf /var/lib/apt/lists/*

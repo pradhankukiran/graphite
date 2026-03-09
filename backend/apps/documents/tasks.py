@@ -26,7 +26,7 @@ def _send_ws_event(document_id: str, event_data: dict) -> None:
         async_to_sync(channel_layer.group_send)(
             group_name,
             {
-                "type": "ingestion.update",
+                "type": "ingestion.stage_update",
                 **event_data,
             },
         )

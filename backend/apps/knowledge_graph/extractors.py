@@ -49,22 +49,36 @@ class EntityExtractor:
         unless ``KG_EXTRACTION_PROVIDER`` overrides it.
         """
         if api_key and base_url:
-            self.client = OpenAI(api_key=api_key, base_url=base_url)
-            self.model = model or self._default_model_for_base_url(base_url)
+            provider = self._provider_name_for_base_url(base_url)
+            self.providers = [
+                (
+                    provider,
+                    OpenAI(api_key=api_key, base_url=base_url),
+                    model or self._default_model_for_base_url(base_url),
+                )
+            ]
         else:
-            # Auto-detect provider from env
-            self.client, self.model = self._auto_detect_provider()
+            # Auto-detect providers from env and fall back across them when needed.
+            self.providers = self._build_provider_candidates()
+
+        self.client = self.providers[0][1]
+        self.model = self.providers[0][2]
 
     @staticmethod
     def _default_model_for_base_url(base_url: str) -> str:
+        provider = EntityExtractor._provider_name_for_base_url(base_url)
+        return DEFAULT_PROVIDER_MODELS.get(provider, DEFAULT_PROVIDER_MODELS["groq"])
+
+    @staticmethod
+    def _provider_name_for_base_url(base_url: str) -> str:
         normalized = base_url.lower()
         if "cerebras.ai" in normalized:
-            return DEFAULT_PROVIDER_MODELS["cerebras"]
+            return "cerebras"
         if "openrouter.ai" in normalized:
-            return DEFAULT_PROVIDER_MODELS["openrouter"]
-        return DEFAULT_PROVIDER_MODELS["groq"]
+            return "openrouter"
+        return "groq"
 
-    def _auto_detect_provider(self):
+    def _build_provider_candidates(self):
         import os
 
         provider_name = os.environ.get("KG_EXTRACTION_PROVIDER", "").strip().lower()
@@ -75,44 +89,57 @@ class EntityExtractor:
             if name not in preferred_order:
                 preferred_order.append(name)
 
+        providers = []
         for name in preferred_order:
             if name == "cerebras" and os.environ.get("CEREBRAS_API_KEY"):
-                return (
-                    OpenAI(
-                        api_key=os.environ["CEREBRAS_API_KEY"],
-                        base_url="https://api.cerebras.ai/v1",
-                    ),
-                    os.environ.get(
-                        "KG_EXTRACTION_MODEL",
-                        DEFAULT_PROVIDER_MODELS["cerebras"],
-                    ),
+                providers.append(
+                    (
+                        "cerebras",
+                        OpenAI(
+                            api_key=os.environ["CEREBRAS_API_KEY"],
+                            base_url="https://api.cerebras.ai/v1",
+                        ),
+                        os.environ.get(
+                            "KG_EXTRACTION_MODEL",
+                            DEFAULT_PROVIDER_MODELS["cerebras"],
+                        ),
+                    )
                 )
             if name == "groq" and os.environ.get("GROQ_API_KEY"):
-                return (
-                    OpenAI(
-                        api_key=os.environ["GROQ_API_KEY"],
-                        base_url="https://api.groq.com/openai/v1",
-                    ),
-                    os.environ.get(
-                        "KG_EXTRACTION_MODEL",
-                        DEFAULT_PROVIDER_MODELS["groq"],
-                    ),
+                providers.append(
+                    (
+                        "groq",
+                        OpenAI(
+                            api_key=os.environ["GROQ_API_KEY"],
+                            base_url="https://api.groq.com/openai/v1",
+                        ),
+                        os.environ.get(
+                            "KG_EXTRACTION_MODEL",
+                            DEFAULT_PROVIDER_MODELS["groq"],
+                        ),
+                    )
                 )
             if name == "openrouter" and os.environ.get("OPENROUTER_API_KEY"):
-                return (
-                    OpenAI(
-                        api_key=os.environ["OPENROUTER_API_KEY"],
-                        base_url="https://openrouter.ai/api/v1",
-                        default_headers={
-                            "HTTP-Referer": "https://graphite.app",
-                            "X-Title": "Graphite",
-                        },
-                    ),
-                    os.environ.get(
-                        "KG_EXTRACTION_MODEL",
-                        DEFAULT_PROVIDER_MODELS["openrouter"],
-                    ),
+                providers.append(
+                    (
+                        "openrouter",
+                        OpenAI(
+                            api_key=os.environ["OPENROUTER_API_KEY"],
+                            base_url="https://openrouter.ai/api/v1",
+                            default_headers={
+                                "HTTP-Referer": "https://graphite.app",
+                                "X-Title": "Graphite",
+                            },
+                        ),
+                        os.environ.get(
+                            "KG_EXTRACTION_MODEL",
+                            DEFAULT_PROVIDER_MODELS["openrouter"],
+                        ),
+                    )
                 )
+
+        if providers:
+            return providers
 
         raise ValueError(
             "No LLM API key configured. Set GROQ_API_KEY, CEREBRAS_API_KEY, or OPENROUTER_API_KEY."
@@ -123,35 +150,57 @@ class EntityExtractor:
 
         Returns: {"entities": [...], "relationships": [...]}
         """
-        try:
-            response = self.client.chat.completions.create(
-                model=self.model,
-                messages=[
-                    {
-                        "role": "system",
-                        "content": "You are an entity extraction system. Always return valid JSON.",
-                    },
-                    {
-                        "role": "user",
-                        "content": ENTITY_EXTRACTION_PROMPT.format(
-                            text=text[:4000]
-                        ),  # Truncate to avoid token limits
-                    },
-                ],
-                temperature=0.0,
-                max_tokens=2000,
-                response_format={"type": "json_object"},
-            )
-            result = json.loads(response.choices[0].message.content)
-            return self._validate_result(result)
-        except json.JSONDecodeError:
-            logger.warning(
-                "Failed to parse LLM response as JSON, attempting extraction from text"
-            )
-            return self._fallback_parse(response.choices[0].message.content)
-        except Exception as e:
-            logger.error(f"Entity extraction failed: {e}")
-            return {"entities": [], "relationships": []}
+        last_error = None
+        prompt = ENTITY_EXTRACTION_PROMPT.format(text=text[:4000])
+
+        for provider_name, client, model in self.providers:
+            try:
+                response = client.chat.completions.create(
+                    model=model,
+                    messages=[
+                        {
+                            "role": "system",
+                            "content": "You are an entity extraction system. Always return valid JSON.",
+                        },
+                        {
+                            "role": "user",
+                            "content": prompt,
+                        },
+                    ],
+                    temperature=0.0,
+                    max_tokens=2000,
+                    response_format={"type": "json_object"},
+                )
+                content = self._extract_message_text(response.choices[0].message.content)
+                if not content:
+                    logger.warning(
+                        "Entity extractor received an empty LLM response from %s",
+                        provider_name,
+                    )
+                    last_error = ValueError("Empty LLM response")
+                    continue
+
+                try:
+                    result = json.loads(content)
+                    return self._validate_result(result)
+                except json.JSONDecodeError:
+                    logger.warning(
+                        "Failed to parse LLM response as JSON from %s, attempting extraction from text",
+                        provider_name,
+                    )
+                    return self._fallback_parse(content)
+            except Exception as exc:
+                last_error = exc
+                logger.warning(
+                    "Entity extraction provider %s failed: %s",
+                    provider_name,
+                    exc,
+                )
+                continue
+
+        if last_error is not None:
+            logger.error("Entity extraction failed: %s", last_error)
+        return {"entities": [], "relationships": []}
 
     def extract_batch(self, texts: list[str]) -> list[dict]:
         """Extract from multiple texts."""
@@ -201,6 +250,9 @@ class EntityExtractor:
 
     def _fallback_parse(self, text: str) -> dict:
         """Try to extract JSON from a non-JSON response."""
+        if not text:
+            return {"entities": [], "relationships": []}
+
         json_match = re.search(r"\{[\s\S]*\}", text)
         if json_match:
             try:
@@ -208,3 +260,43 @@ class EntityExtractor:
             except json.JSONDecodeError:
                 pass
         return {"entities": [], "relationships": []}
+
+    def _extract_message_text(self, content) -> str:
+        """Normalize chat completion content into a plain string."""
+        if isinstance(content, str):
+            return content.strip()
+
+        if isinstance(content, list):
+            parts = []
+            for item in content:
+                if isinstance(item, str):
+                    parts.append(item)
+                    continue
+
+                if not isinstance(item, dict):
+                    continue
+
+                if item.get("type") == "text":
+                    text_value = item.get("text")
+                    if isinstance(text_value, str):
+                        parts.append(text_value)
+                    elif isinstance(text_value, dict):
+                        value = text_value.get("value")
+                        if isinstance(value, str):
+                            parts.append(value)
+                    continue
+
+                for key in ("text", "content", "value"):
+                    value = item.get(key)
+                    if isinstance(value, str):
+                        parts.append(value)
+                        break
+                    if isinstance(value, dict):
+                        nested = value.get("value")
+                        if isinstance(nested, str):
+                            parts.append(nested)
+                            break
+
+            return "\n".join(part.strip() for part in parts if part and part.strip())
+
+        return ""

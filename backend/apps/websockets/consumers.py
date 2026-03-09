@@ -35,6 +35,10 @@ class IngestionConsumer(AsyncJsonWebSocketConsumer):
             }
         )
 
+    async def ingestion_update(self, event):
+        """Backward-compatible alias for older ingestion.update events."""
+        await self.ingestion_stage_update(event)
+
     async def ingestion_completed(self, event):
         """Handle ingestion.completed event."""
         await self.send_json(

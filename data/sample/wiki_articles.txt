@@ -1,0 +1,69 @@
+ARTIFICIAL INTELLIGENCE: A BRIEF HISTORY
+
+Artificial intelligence (AI) is the simulation of human intelligence processes by computer systems. The field was formally founded at the Dartmouth Conference in 1956, organized by John McCarthy, Marvin Minsky, Nathaniel Rochester, and Claude Shannon at Dartmouth College in Hanover, New Hampshire. McCarthy, a professor at Stanford University, coined the term "artificial intelligence" and is widely regarded as one of the founding fathers of the discipline.
+
+The intellectual roots of AI extend further back. In 1950, Alan Turing published his seminal paper "Computing Machinery and Intelligence," introducing what became known as the Turing Test — a criterion for determining whether a machine can exhibit intelligent behavior indistinguishable from a human. Turing, who had been instrumental in breaking the Enigma code at Bletchley Park during World War II, proposed that the question "Can machines think?" could be replaced by the more practical question of whether machines could imitate human responses in conversation.
+
+The early decades of AI research (1956-1974) are often called the "Golden Age." Researchers at MIT, Stanford, Carnegie Mellon University, and Edinburgh developed programs that could solve algebra problems, prove geometric theorems, and engage in simple English conversation. Allen Newell and Herbert A. Simon at Carnegie Mellon created the General Problem Solver, one of the first programs intended to simulate human problem-solving. Joseph Weizenbaum at MIT developed ELIZA, an early natural language processing program that could simulate conversation with a Rogerian psychotherapist.
+
+The 1970s and 1980s saw the rise and fall of expert systems — AI programs that encoded domain-specific knowledge as rules. Edward Feigenbaum at Stanford pioneered the development of expert systems, including MYCIN for medical diagnosis and DENDRAL for chemical analysis. Japan's Fifth Generation Computer Project (1982-1992), led by the Ministry of International Trade and Industry, invested heavily in AI and parallel computing but failed to achieve its ambitious goals.
+
+The modern resurgence of AI began with the deep learning revolution. In 2012, a neural network called AlexNet, developed by Alex Krizhevsky, Ilya Sutskever, and Geoffrey Hinton at the University of Toronto, won the ImageNet Large Scale Visual Recognition Challenge by a significant margin. This breakthrough demonstrated that deep convolutional neural networks, trained on large datasets using GPUs, could achieve superhuman performance on image recognition tasks.
+
+Geoffrey Hinton, Yann LeCun, and Yoshua Bengio — sometimes called the "Godfathers of Deep Learning" — received the 2018 ACM A.M. Turing Award for their foundational contributions to deep learning. Hinton, based at the University of Toronto and Google Brain, pioneered backpropagation and deep belief networks. LeCun, at New York University and Meta AI, developed convolutional neural networks. Bengio, at the University of Montreal and Mila, advanced recurrent neural networks and attention mechanisms.
+
+The transformer architecture, introduced by Vaswani et al. at Google in 2017, revolutionized natural language processing. Google's BERT (2018) and OpenAI's GPT series (GPT-2 in 2019, GPT-3 in 2020, GPT-4 in 2023) demonstrated that large language models trained on vast text corpora could perform a wide range of tasks. Anthropic, founded in 2021 by former OpenAI researchers Dario Amodei and Daniela Amodei, developed the Claude series of AI assistants with a focus on safety and alignment. Meta released Llama as an open-weight model family, catalyzing open-source AI development.
+
+Today, AI is deployed across healthcare, finance, transportation, manufacturing, and scientific research. The global AI market was valued at approximately $196 billion in 2023, with projections exceeding $1.8 trillion by 2030, according to estimates from Grand View Research. Major AI research is conducted at institutions including Stanford University, MIT, Carnegie Mellon University, University of California Berkeley, DeepMind (a subsidiary of Alphabet), OpenAI, Anthropic, Meta AI, and Microsoft Research.
+
+---
+
+GRAPH DATABASE TECHNOLOGY
+
+A graph database is a database management system that uses graph structures — consisting of nodes, edges, and properties — to represent and store data. Unlike relational databases, which organize data into tables with rows and columns, graph databases model data as a network of entities and their interconnections, making them particularly well-suited for applications involving complex relationships.
+
+The most widely adopted graph database is Neo4j, developed by Neo4j, Inc. (formerly Neo Technology), headquartered in San Mateo, California. Founded in 2007 by Emil Eifrem, Johan Svensson, and Peter Neubauer in Malmo, Sweden, Neo4j implements the property graph model, where both nodes and relationships can carry key-value properties. Neo4j uses Cypher as its declarative query language, which was designed to be intuitive for expressing graph patterns. In 2024, Neo4j reported over 1,500 enterprise customers and a community of more than 250,000 developers.
+
+The property graph model, which Neo4j popularized, represents data as a directed, labeled multigraph. Each node has one or more labels (e.g., :Person, :Company) and properties (e.g., name: "Ada Lovelace"). Relationships connect nodes directionally and carry a type (e.g., WORKS_FOR, LOCATED_IN) along with optional properties such as weight or timestamp. This model enables efficient traversal of connected data without the expensive join operations required by relational databases.
+
+An alternative graph model is the Resource Description Framework (RDF), a W3C standard used primarily in the Semantic Web community. RDF represents data as subject-predicate-object triples. Notable RDF databases include Apache Jena (developed by the Apache Software Foundation), Amazon Neptune (offered by Amazon Web Services), and Stardog (developed by Stardog Union, based in Arlington, Virginia). The SPARQL query language is used to query RDF data.
+
+Graph databases have found applications in numerous domains. In social networking, companies like Facebook (now Meta Platforms) and LinkedIn use graph models to represent user connections and recommend new contacts. In fraud detection, banks including JPMorgan Chase and HSBC use graph analytics to identify suspicious transaction patterns. Knowledge graphs — large-scale graph databases representing factual knowledge — power features at Google (the Google Knowledge Graph, launched in 2012), Microsoft (the Satori knowledge graph used by Bing), and Apple (used by Siri for entity resolution).
+
+In the AI and machine learning space, graph databases serve as the backbone for Retrieval-Augmented Generation (RAG) systems. By storing document chunks alongside extracted entities and their relationships, graph databases enable hybrid retrieval that combines vector similarity search with structured graph traversal. Neo4j introduced native vector indexing in version 5.11, enabling users to store and query embedding vectors alongside graph data without requiring a separate vector database such as Pinecone or Weaviate.
+
+Other notable graph databases include Amazon Neptune (a managed graph database supporting both property graph and RDF models), ArangoDB (a multi-model database supporting graphs, documents, and key-value data, developed in Cologne, Germany), TigerGraph (founded in 2012 in Redwood City, California, focused on real-time deep link analytics), and JanusGraph (an open-source distributed graph database originally developed by Aurelius, later contributed to the Linux Foundation).
+
+The Graph Database Management Systems market was valued at approximately $3.2 billion in 2023, with compound annual growth projected at 19.4% through 2030, driven by the expanding adoption of knowledge graphs, recommendation engines, and AI-powered analytics.
+
+---
+
+CLIMATE CHANGE: GLOBAL RESPONSE AND KEY MILESTONES
+
+Climate change refers to the long-term shift in global temperatures and weather patterns, primarily driven by human activities since the Industrial Revolution. The burning of fossil fuels — coal, oil, and natural gas — releases greenhouse gases, particularly carbon dioxide (CO2) and methane (CH4), which trap heat in the Earth's atmosphere.
+
+The scientific understanding of climate change has evolved over more than a century. In 1896, Swedish chemist Svante Arrhenius first calculated that doubling atmospheric CO2 could raise global temperatures by 5-6 degrees Celsius. In the 1950s, Charles David Keeling began continuous atmospheric CO2 measurements at the Mauna Loa Observatory in Hawaii, producing the famous "Keeling Curve" that documented the steady rise in CO2 concentrations.
+
+The Intergovernmental Panel on Climate Change (IPCC) was established in 1988 by the United Nations Environment Programme (UNEP) and the World Meteorological Organization (WMO). Headquartered in Geneva, Switzerland, the IPCC provides comprehensive scientific assessments of climate change. The panel shared the 2007 Nobel Peace Prize with former U.S. Vice President Al Gore for their efforts to disseminate knowledge about anthropogenic climate change.
+
+The United Nations Framework Convention on Climate Change (UNFCCC), adopted at the Earth Summit in Rio de Janeiro, Brazil, in 1992, established the foundation for international climate negotiations. The convention has 198 parties (197 countries plus the European Union) and holds annual Conferences of the Parties (COP).
+
+Major international agreements include:
+
+The Kyoto Protocol (1997): Adopted at COP3 in Kyoto, Japan, this treaty committed industrialized countries to reduce greenhouse gas emissions by an average of 5.2% below 1990 levels during the commitment period 2008-2012. The protocol introduced market-based mechanisms including emissions trading. The United States, under President George W. Bush, withdrew from the protocol in 2001.
+
+The Paris Agreement (2015): Adopted at COP21 in Paris, France, this landmark agreement brought nearly all nations into a common framework to combat climate change. The agreement set a goal of limiting global warming to well below 2 degrees Celsius above pre-industrial levels, with efforts to limit the increase to 1.5 degrees. Under the agreement, countries submit Nationally Determined Contributions (NDCs) outlining their emission reduction targets. As of 2024, 195 parties have signed the agreement.
+
+The Glasgow Climate Pact (2021): At COP26 in Glasgow, Scotland (United Kingdom), parties agreed to accelerate efforts to phase down unabated coal power and phase out inefficient fossil fuel subsidies. The pact also established rules for international carbon markets under Article 6 of the Paris Agreement.
+
+Key organizations in the climate space include the International Energy Agency (IEA), headquartered in Paris; the National Aeronautics and Space Administration (NASA) Goddard Institute for Space Studies in New York City, which monitors global temperature data; the National Oceanic and Atmospheric Administration (NOAA), based in Silver Spring, Maryland; and the European Environment Agency (EEA) in Copenhagen, Denmark.
+
+The private sector has increasingly engaged in climate action. The Science Based Targets initiative (SBTi), a partnership between CDP (formerly the Carbon Disclosure Project), the United Nations Global Compact, the World Resources Institute (WRI), and the World Wide Fund for Nature (WWF), helps companies set emissions reduction targets aligned with the Paris Agreement. As of 2024, over 4,000 companies have committed to SBTi targets.
+
+Notable corporate climate commitments include Microsoft's pledge to be carbon negative by 2030 and to remove all historical emissions by 2050; Apple's achievement of carbon neutrality across its entire supply chain for the Apple Watch in 2023; Amazon's Climate Pledge, which commits to reaching net-zero carbon by 2040; and Google's goal to operate on 24/7 carbon-free energy by 2030.
+
+The effects of climate change are already visible worldwide. According to NASA, the global average temperature has risen approximately 1.1 degrees Celsius above pre-industrial levels. The Arctic is warming at roughly four times the global average, leading to accelerated ice sheet loss in Greenland and reduced sea ice extent. The Great Barrier Reef in Australia has experienced multiple mass bleaching events since 2016. Rising sea levels threaten low-lying nations including the Maldives, Tuvalu, and the Marshall Islands, as well as coastal cities such as Miami, Jakarta, and Shanghai.
+
+Renewable energy deployment has accelerated as a key mitigation strategy. Solar and wind energy capacity grew from 1,200 gigawatts in 2018 to over 3,400 gigawatts in 2024 globally. China leads in renewable energy installation, followed by the European Union and the United States. The International Renewable Energy Agency (IRENA), headquartered in Abu Dhabi, United Arab Emirates, reported that renewable energy accounted for 42% of global electricity generation in 2024.
+
+The transition to electric vehicles represents another significant climate response. Global electric vehicle sales exceeded 18 million units in 2024, led by manufacturers including Tesla (headquartered in Austin, Texas), BYD (headquartered in Shenzhen, China), Volkswagen Group (headquartered in Wolfsburg, Germany), and Hyundai Motor Group (headquartered in Seoul, South Korea). The European Union adopted a regulation in 2023 requiring all new cars sold from 2035 to be zero-emission.

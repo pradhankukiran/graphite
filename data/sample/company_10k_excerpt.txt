@@ -1,0 +1,132 @@
+MERIDIAN TECHNOLOGIES INC.
+ANNUAL REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934
+For the fiscal year ended December 31, 2024
+
+PART I
+
+Item 1. Business
+
+Overview
+
+Meridian Technologies Inc. ("Meridian," "the Company," "we," or "our") is a leading enterprise technology company headquartered in San Francisco, California. Founded in 2015 by Sarah Chen and Marcus Williams, the Company develops and provides cloud computing, data analytics, and artificial intelligence solutions for mid-market and enterprise customers worldwide. Meridian's mission is to empower organizations to unlock the value of their data through intelligent, scalable infrastructure.
+
+Our principal executive offices are located at 555 Mission Street, Suite 3200, San Francisco, CA 94105, and our telephone number is (415) 555-0142.
+
+Products and Services
+
+Meridian operates through three primary product lines:
+
+CloudSync Platform: Our flagship cloud infrastructure platform provides hybrid and multi-cloud orchestration, serverless computing, container management, and infrastructure-as-code capabilities. CloudSync supports deployment across Amazon Web Services, Microsoft Azure, and Google Cloud Platform, enabling customers to avoid vendor lock-in while maintaining consistent governance and security policies. As of December 31, 2024, CloudSync served over 2,800 enterprise customers across 45 countries.
+
+DataForge Analytics Suite: DataForge is our comprehensive data analytics platform that includes real-time data ingestion, transformation pipelines, and business intelligence dashboards. The platform integrates with major data warehouses including Snowflake, Databricks, and Amazon Redshift. DataForge processes an average of 4.2 petabytes of data per day across its customer base. In fiscal 2024, we introduced DataForge Streaming, a real-time analytics capability built on Apache Kafka and Apache Flink.
+
+NeuralEdge AI Platform: NeuralEdge is our artificial intelligence and machine learning platform that enables customers to build, train, and deploy machine learning models at scale. The platform supports popular frameworks including TensorFlow, PyTorch, and Hugging Face Transformers. NeuralEdge includes automated machine learning (AutoML) capabilities, model versioning, feature stores, and integrated MLOps workflows. In 2024, we launched NeuralEdge Foundry, a managed service for fine-tuning and deploying large language models.
+
+Technology and Architecture
+
+Our technology stack is built on a microservices architecture deployed on Kubernetes clusters. We leverage Neo4j graph databases for our knowledge management features, PostgreSQL for transactional data, and Redis for caching and real-time event processing. Our AI components utilize NVIDIA GPU clusters for training workloads and custom-designed inference engines optimized for low-latency prediction serving.
+
+We hold 47 patents and have 23 additional patent applications pending with the United States Patent and Trademark Office, primarily covering innovations in distributed computing, graph-based data processing, and federated machine learning.
+
+Strategic Partnerships
+
+Meridian maintains strategic technology partnerships with several leading companies:
+
+- Amazon Web Services (AWS): Advanced Technology Partner since 2019; CloudSync is an AWS-qualified workload migration tool
+- Microsoft Azure: Co-sell partnership for joint enterprise customers; DataForge is integrated with Azure Synapse Analytics
+- NVIDIA Corporation: NeuralEdge is certified for NVIDIA DGX systems and includes optimizations for NVIDIA A100 and H100 GPUs
+- Snowflake Inc.: Native connector between DataForge and Snowflake Data Cloud
+- Databricks: Preferred partner for unified analytics; joint solution for lakehouse architecture customers
+
+Customers
+
+Our customer base spans financial services, healthcare, technology, government, and retail industries. Key enterprise customers include JPMorgan Chase, UnitedHealth Group, Boeing, the U.S. Department of Energy, and Walmart. No single customer accounted for more than 8% of total revenue in fiscal 2024.
+
+Item 6. Selected Financial Data
+
+Revenue for fiscal year 2024 was $1.87 billion, representing a 34% increase over fiscal year 2023 revenue of $1.39 billion. Annual recurring revenue (ARR) reached $2.1 billion as of December 31, 2024. Subscription revenue comprised 82% of total revenue. Gross margin was 72.4%.
+
+Revenue by product line:
+- CloudSync: $892 million (48% of total revenue)
+- DataForge: $561 million (30% of total revenue)
+- NeuralEdge: $417 million (22% of total revenue)
+
+Revenue by geography:
+- North America: $1.12 billion (60%)
+- Europe, Middle East, and Africa (EMEA): $486 million (26%)
+- Asia-Pacific (APAC): $262 million (14%)
+
+Operating expenses totaled $1.68 billion, including $412 million in research and development. Net income was $142 million, or $1.28 per diluted share.
+
+Item 7. Management's Discussion and Analysis
+
+The Company's strong revenue growth in fiscal 2024 was driven by expansion in NeuralEdge adoption, which grew 67% year-over-year, reflecting the surge in enterprise AI demand. CloudSync maintained steady growth of 22%, while DataForge grew 31% on the strength of the new streaming analytics capabilities.
+
+We expanded our go-to-market organization significantly during 2024. Total headcount increased to 4,850 employees as of December 31, 2024, up from 3,720 at the end of fiscal 2023. Our engineering organization comprises approximately 2,400 employees, or 49% of total headcount.
+
+During 2024, we completed two strategic acquisitions:
+
+GraphMind Inc.: In March 2024, we acquired GraphMind, a San Jose-based graph analytics startup, for $185 million in cash and stock. GraphMind's technology has been integrated into DataForge to enhance knowledge graph construction and graph-based retrieval capabilities. Dr. Elena Vasquez, GraphMind's co-founder and former Stanford AI Lab researcher, joined Meridian as Vice President of Graph Intelligence.
+
+SecureVector Ltd.: In August 2024, we acquired SecureVector, a London-based cybersecurity firm, for $92 million. SecureVector's confidential computing technology has been integrated into NeuralEdge to enable privacy-preserving federated learning.
+
+International Operations
+
+We maintain offices in the following locations:
+- San Francisco, California (headquarters): 2,100 employees
+- Austin, Texas: 680 employees
+- New York, New York: 340 employees
+- London, United Kingdom: 520 employees
+- Berlin, Germany: 280 employees
+- Tokyo, Japan: 410 employees
+- Bangalore, India: 420 employees
+- Sydney, Australia: 100 employees
+
+Key Personnel
+
+Sarah Chen, Chief Executive Officer and Co-Founder. Ms. Chen has served as CEO since the Company's founding in 2015. Prior to Meridian, she was Vice President of Cloud Engineering at Salesforce and held engineering leadership roles at Google. Ms. Chen holds a B.S. in Computer Science from MIT and an MBA from Stanford Graduate School of Business.
+
+Marcus Williams, Chief Technology Officer and Co-Founder. Mr. Williams has served as CTO since the Company's founding. Previously, he was a Principal Engineer at Amazon Web Services, where he led the development of the EC2 Auto Scaling service. He holds a Ph.D. in Distributed Systems from Carnegie Mellon University.
+
+Priya Sharma, Chief Financial Officer. Ms. Sharma joined Meridian in 2021 from Goldman Sachs, where she served as Managing Director in the Technology Banking Group. She holds a B.A. in Economics from Yale University and an MBA from The Wharton School.
+
+James O'Brien, Chief Revenue Officer. Mr. O'Brien joined Meridian in 2022 from Microsoft, where he served as Corporate Vice President of Azure Sales. He is responsible for the Company's global sales, marketing, and customer success organizations.
+
+Dr. Elena Vasquez, Vice President of Graph Intelligence. Dr. Vasquez joined Meridian through the GraphMind acquisition in 2024. She previously held postdoctoral positions at Stanford AI Lab and published extensively on graph neural networks. She holds a Ph.D. in Machine Learning from ETH Zurich.
+
+Competition
+
+We compete with large cloud platform providers (Amazon Web Services, Microsoft Azure, Google Cloud Platform), data analytics companies (Snowflake, Databricks, Palantir Technologies), and AI/ML platforms (Dataiku, H2O.ai, Weights & Biases). We believe our integrated approach across cloud infrastructure, analytics, and AI differentiates us from single-product competitors.
+
+Research and Development
+
+Meridian invested $412 million in research and development in fiscal 2024, representing 22% of total revenue. Our R&D efforts are organized into four centers of excellence:
+
+- Cloud Infrastructure Lab (San Francisco): Focuses on next-generation container orchestration, serverless compute, and edge computing infrastructure. Led by Dr. Wei Zhang, Vice President of Cloud Engineering, formerly of Google Cloud.
+- AI Research Center (Austin): Develops NeuralEdge platform capabilities, including large language model integration, retrieval-augmented generation, and multimodal AI. Collaborates with the University of Texas at Austin on fundamental research.
+- Data Platform Engineering (Berlin): Develops DataForge real-time streaming and data pipeline technologies. Partners with the Technical University of Berlin on stream processing research.
+- Graph Intelligence Lab (San Jose): Inherited from the GraphMind acquisition. Develops graph-based knowledge extraction, entity resolution, and graph neural network technologies for enterprise applications.
+
+In 2024, we published 28 peer-reviewed papers at venues including NeurIPS, ICML, SIGMOD, and VLDB. We contributed to several open-source projects including Apache Kafka, Kubernetes, and Neo4j.
+
+Environmental, Social, and Governance
+
+Meridian is committed to sustainable operations. We achieved carbon neutrality for our direct operations (Scope 1 and 2) in 2023 and have committed to net-zero Scope 3 emissions by 2035. Our data centers use 100% renewable energy through direct procurement agreements with NextEra Energy and Enel Green Power. We are a participant in the Science Based Targets initiative and have committed to the United Nations Global Compact.
+
+Our workforce reflects our commitment to diversity: 38% of our employees identify as female, 42% of our engineering team are from underrepresented groups, and our board of directors is 44% female. We were named to Fortune's "Best Places to Work in Technology" list for the third consecutive year.
+
+Risk Factors
+
+Key risk factors include: dependence on cloud infrastructure providers for our multi-cloud strategy; the rapidly evolving AI regulatory landscape, particularly the European Union AI Act; competition from well-capitalized technology companies; our ability to retain key technical talent in a competitive labor market; cybersecurity threats to our platform and customer data; and macroeconomic conditions affecting enterprise IT spending.
+
+SIGNATURES
+
+Pursuant to the requirements of Section 13 or 15(d) of the Securities Exchange Act of 1934, the registrant has duly caused this report to be signed on its behalf by the undersigned, thereunto duly authorized.
+
+MERIDIAN TECHNOLOGIES INC.
+
+By: /s/ Sarah Chen
+Sarah Chen
+Chief Executive Officer
+
+Date: March 1, 2025

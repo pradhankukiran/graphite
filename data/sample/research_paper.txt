@@ -1,0 +1,101 @@
+Graph-Enhanced Retrieval for Knowledge-Intensive Tasks
+
+Anika Patel (1), David Kim (1), Sophie Laurent (2), Rajesh Gupta (1)
+(1) Stanford AI Lab, Stanford University
+(2) DeepMind, London
+
+Abstract
+
+Retrieval-Augmented Generation (RAG) has emerged as the dominant paradigm for grounding large language models (LLMs) in domain-specific knowledge. However, standard RAG pipelines rely exclusively on vector similarity search over document chunks, failing to capture the rich relational structure inherent in knowledge-intensive corpora. In this paper, we introduce GraphRAG, a framework that augments traditional retrieval with structured knowledge graph traversal to produce more accurate, contextually coherent, and verifiable answers. We evaluate GraphRAG on three benchmarks — Natural Questions, HotpotQA, and a new enterprise document understanding dataset — and demonstrate consistent improvements over plain RAG baselines. On the enterprise benchmark, GraphRAG achieves a 23.7% improvement in answer accuracy and a 31.2% reduction in hallucination rate compared to vector-only retrieval.
+
+1. Introduction
+
+Large language models such as GPT-4, Claude, and Llama have demonstrated remarkable capabilities in text generation, reasoning, and instruction following. Despite their broad knowledge, LLMs are prone to hallucination when asked about domain-specific or recently updated information. Retrieval-Augmented Generation addresses this limitation by retrieving relevant passages from an external corpus and conditioning the model's response on the retrieved context.
+
+The standard RAG pipeline consists of three stages: (1) document ingestion, where documents are chunked and embedded using models such as Sentence-BERT or OpenAI's text-embedding-3; (2) retrieval, where the user's query is embedded and compared against stored chunk embeddings using cosine similarity or approximate nearest neighbor search; and (3) generation, where the retrieved chunks are concatenated into a prompt context and passed to an LLM for answer synthesis.
+
+While effective, this approach has several limitations. First, chunking destroys document structure: section headings, cross-references, and argumentative flow are lost when documents are split into fixed-length segments. Second, vector similarity is purely semantic — it cannot capture multi-hop relationships such as "Company X acquired Company Y, which was founded by Person Z." Third, entity disambiguation is challenging when the same name refers to different entities across documents.
+
+Knowledge graphs offer a complementary representation. By modeling entities and their relationships explicitly, a knowledge graph preserves the relational structure that vector embeddings discard. In this work, we explore how combining vector retrieval with graph-based traversal yields superior results for knowledge-intensive tasks.
+
+2. Related Work
+
+Knowledge Graphs and NLP. Knowledge graphs have a long history in natural language processing. Early systems such as Freebase and DBpedia provided structured knowledge for question answering. More recently, Wikidata has become the de facto open knowledge graph, while domain-specific graphs are common in biomedicine (e.g., UMLS) and finance. Graph neural networks (Kipf and Welling, 2017) and attention mechanisms applied to graph structures (Velickovic et al., 2018) have enabled learning over graph-structured data.
+
+Retrieval-Augmented Generation. Lewis et al. (2020) introduced RAG as a general framework for conditioning language models on retrieved documents. Subsequent work has improved retrieval quality through query expansion, hypothetical document embeddings (HyDE), and reranking. Borgeaud et al. (2022) demonstrated that retrieval augmentation scales effectively with model size in the RETRO architecture.
+
+Graph-Enhanced Retrieval. Microsoft Research introduced the concept of graph-based RAG in their GraphRAG paper (Edge et al., 2024), using community detection algorithms to create hierarchical summaries of knowledge graphs. LlamaIndex provides property graph indexes that combine vector search with structured graph traversal. LangChain's GraphCypherQAChain enables natural language queries against Neo4j databases.
+
+3. GraphRAG Framework
+
+Our framework consists of four components:
+
+3.1 Entity Extraction Pipeline
+
+We use a fine-tuned Llama 3.1 model to extract entities and relationships from document chunks. The extraction prompt instructs the model to identify named entities (persons, organizations, locations, technologies, concepts, events) and classify relationships between them. We apply entity resolution using embedding similarity and string matching to merge duplicate references.
+
+3.2 Knowledge Graph Construction
+
+Extracted entities and relationships are stored in a Neo4j graph database. Each entity becomes a node with properties including name, type, description, and embedding vector. Relationships are typed edges (e.g., WORKS_FOR, LOCATED_IN, DEVELOPS, ACQUIRED) with optional weight and description properties. Chunk nodes are linked to entity nodes via MENTIONS edges, preserving provenance.
+
+3.3 Hybrid Retrieval
+
+Given a user query, we perform parallel retrieval through two channels:
+
+Vector Channel: The query is embedded and searched against chunk embeddings stored in Neo4j's native vector index, returning the top-k most similar chunks.
+
+Graph Channel: Named entities in the query are identified using the extraction model, matched to graph nodes, and their local neighborhoods (1-2 hop) are traversed. Connected entities, their relationships, and the chunks that mention them are collected as additional context.
+
+The two result sets are merged, deduplicated, and ranked using a learned fusion model that weighs semantic similarity, graph proximity, and entity relevance.
+
+3.4 Context-Aware Generation
+
+The fused context — comprising both chunk text and structured entity-relationship triples — is formatted into a prompt template. We include explicit relationship descriptions (e.g., "Sarah Chen is the CEO of Meridian Technologies") alongside chunk excerpts, enabling the LLM to ground its response in both unstructured text and structured facts.
+
+4. Experiments
+
+We evaluate on three benchmarks:
+
+Natural Questions (NQ): An open-domain QA dataset derived from Google search queries. We use the standard dev set of 3,610 questions.
+
+HotpotQA: A multi-hop QA dataset requiring reasoning across multiple documents. We use the distractor setting with 7,405 questions.
+
+Enterprise Document Understanding (EDU): A new benchmark we constructed from 500 publicly available corporate 10-K filings, earnings transcripts, and press releases. The dataset contains 2,000 questions that require multi-entity reasoning (e.g., "Which companies partnered with both AWS and NVIDIA in 2024?").
+
+Baselines: We compare against (1) Plain RAG with Sentence-BERT embeddings and GPT-4 generation; (2) HyDE-enhanced RAG; (3) Microsoft GraphRAG with community summaries.
+
+Results:
+
+                  NQ (EM)    HotpotQA (F1)    EDU (Accuracy)
+Plain RAG          42.1         48.3              51.2
+HyDE RAG           44.7         51.6              54.8
+MS GraphRAG        45.2         53.1              61.4
+Our GraphRAG       47.8         56.9              63.3
+
+On the enterprise benchmark, our approach achieves 63.3% accuracy, a 23.7% relative improvement over Plain RAG's 51.2%. Hallucination rate (measured via entailment verification) dropped from 18.4% to 12.7%.
+
+5. Analysis
+
+Ablation studies show that the graph channel contributes most significantly for multi-hop questions. On single-hop NQ questions, the improvement over plain RAG is modest (2-3%), as vector similarity suffices for direct factual lookup. On HotpotQA's multi-hop questions, the graph channel provides an 8.6% improvement by traversing entity relationships to bridge information across documents.
+
+The entity extraction quality is critical. When we replace our fine-tuned extractor with zero-shot GPT-4 extraction, accuracy on EDU drops by 4.1%, suggesting that domain-adapted extraction models are important for specialized corpora.
+
+Latency analysis shows that the graph retrieval adds approximately 120ms of overhead per query (median), primarily from the Cypher query execution in Neo4j. This overhead is acceptable for enterprise applications but may require optimization through query caching or pre-computed subgraphs for latency-sensitive deployments.
+
+6. Conclusion
+
+We have demonstrated that augmenting RAG with structured knowledge graph retrieval significantly improves answer quality for knowledge-intensive tasks, particularly those requiring multi-hop reasoning. Our framework is implemented as an open-source library compatible with Neo4j, LangChain, and LlamaIndex, and achieves state-of-the-art results on both academic and enterprise benchmarks.
+
+Future work includes extending the framework to support temporal reasoning (tracking how entity relationships change over time), incorporating confidence scores from the extraction pipeline into retrieval ranking, and scaling to knowledge graphs with billions of edges.
+
+Acknowledgments
+
+This work was supported by the Stanford AI Lab, a Google Research Award, and compute resources from NVIDIA. We thank the Neo4j engineering team for their assistance with vector index optimization.
+
+References
+
+Borgeaud, S., et al. (2022). Improving language models by retrieving from trillions of tokens. ICML.
+Edge, D., et al. (2024). From local to global: A graph RAG approach to query-focused summarization. arXiv:2404.16130.
+Kipf, T. N., and Welling, M. (2017). Semi-supervised classification with graph convolutional networks. ICLR.
+Lewis, P., et al. (2020). Retrieval-augmented generation for knowledge-intensive NLP tasks. NeurIPS.
+Velickovic, P., et al. (2018). Graph attention networks. ICLR.

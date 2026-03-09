@@ -1,0 +1,60 @@
+[project]
+name = "graphite-backend"
+version = "0.1.0"
+description = "Enterprise GraphRAG Application Backend"
+requires-python = ">=3.12"
+dependencies = [
+    "django>=5.1,<5.2",
+    "django-ninja>=1.3",
+    "django-ninja-jwt>=5.3",
+    "django-cors-headers",
+    "psycopg[binary]>=3.1",
+    "redis>=5.0",
+    "celery[redis]>=5.4",
+    "channels[daphne]>=4.1",
+    "channels-redis>=4.2",
+    "neo4j>=5.20",
+    "neo4j-graphrag>=1.13",
+    "langchain-neo4j>=0.8",
+    "langchain-community",
+    "llama-index-graph-stores-neo4j",
+    "llama-index-core",
+    "sentence-transformers",
+    "openai>=1.0",
+    "python-dotenv",
+    "unstructured[all-docs]",
+    "gunicorn",
+    "uvicorn[standard]",
+    "httpx",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-django",
+    "pytest-asyncio",
+    "ruff",
+    "factory-boy",
+    "coverage",
+]
+
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.development"
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["apps", "config"]

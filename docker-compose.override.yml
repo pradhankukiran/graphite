@@ -1,0 +1,27 @@
+services:
+  backend:
+    volumes:
+      - ./backend:/app
+    environment:
+      - DJANGO_DEBUG=True
+      - DATABASE_URL=postgresql://graphite:graphite_dev_password@postgres:5432/graphite
+
+  celery-ingestion:
+    volumes:
+      - ./backend:/app
+
+  celery-embedding:
+    volumes:
+      - ./backend:/app
+
+  celery-llm:
+    volumes:
+      - ./backend:/app
+
+  celery-graph:
+    volumes:
+      - ./backend:/app
+
+  celery-beat:
+    volumes:
+      - ./backend:/app
